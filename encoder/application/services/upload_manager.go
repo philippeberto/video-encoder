@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -60,6 +61,13 @@ func (videoUpoad *VideoUpload) ProcessUpload(concurrency int, doneUpload chan st
 		}
 		close(input)
 	}()
+	for r := range returnChannel {
+		if r != "" {
+			doneUpload <- r
+			break
+		}
+	}
+
 	return nil
 }
 
@@ -90,10 +98,10 @@ func (videoUpload *VideoUpload) uploadWorker(input chan int, returnChannel chan 
 		err := videoUpload.UploadObject(videoUpload.Paths[i], uploadClient, ctx)
 		if err != nil {
 			videoUpload.Errors = append(videoUpload.Errors, videoUpload.Paths[i])
-			returnChannel <- videoUpload.Paths[i]
-			continue
+			log.Printf("Error during the upload: %v. Error: %v", videoUpload.Paths[i], err)
+			returnChannel <- err.Error()
 		}
 		returnChannel <- ""
 	}
-
+	returnChannel <- "upload completed"
 }
