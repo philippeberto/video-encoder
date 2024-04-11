@@ -27,8 +27,8 @@ Para que uma mensagem possa ser parseada pelo sistema de encoder, ela deverá ch
 
 ```
 {
-  "resource_id": "my-resource-id-can-be-a-uuid-type",
-  "file_path": "convite.mp4"
+  "resource_id": "client-id-1",
+  "file_path": "chegada.mp4"
 }
 ```
 

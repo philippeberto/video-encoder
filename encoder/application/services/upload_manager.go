@@ -31,7 +31,7 @@ func (videoUpload *VideoUpload) UploadObject(objectPath string, client *storage.
 	}
 	defer f.Close()
 	writer := client.Bucket(videoUpload.OutputBucket).Object(path[1]).NewWriter(ctx)
-	writer.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
+	// writer.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
 	if _, err := io.Copy(writer, f); err != nil {
 		return err
 	}
